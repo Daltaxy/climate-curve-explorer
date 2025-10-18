@@ -5,8 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Plus, Menu, Globe } from "lucide-react";
+import { Plus, Menu, Globe, LayoutGrid, Columns2, Rows2 } from "lucide-react";
 import { toast } from "sonner";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const translations = {
   en: {
@@ -17,6 +24,11 @@ const translations = {
     imageAdded: "Image added to comparison",
     imageRemoved: "Image removed from comparison",
     language: "Language",
+    layout: "Layout",
+    layoutList: "List",
+    layoutHorizontal: "Horizontal Split",
+    layoutVertical: "Vertical Split",
+    layoutGrid: "Grid (2×2)",
   },
   fr: {
     title: "Courbes de Température",
@@ -26,12 +38,18 @@ const translations = {
     imageAdded: "Image ajoutée à la comparaison",
     imageRemoved: "Image retirée de la comparaison",
     language: "Langue",
+    layout: "Disposition",
+    layoutList: "Liste",
+    layoutHorizontal: "Division Horizontale",
+    layoutVertical: "Division Verticale",
+    layoutGrid: "Grille (2×2)",
   },
 };
 
 const Index = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [language, setLanguage] = useState<"en" | "fr">("en");
+  const [layout, setLayout] = useState<"list" | "horizontal" | "vertical" | "grid">("list");
   const [parameters, setParameters] = useState({
     albedo: "0.30" as "0.30" | "0.33",
     obliquity: "constante" as "constante" | "variable",
@@ -67,6 +85,10 @@ const Index = () => {
   const removeFromComparison = (index: number) => {
     setComparisonImages((prev) => prev.filter((_, i) => i !== index));
     toast.info(t.imageRemoved);
+  };
+
+  const handleReorderImages = (newOrder: string[]) => {
+    setComparisonImages(newOrder);
   };
 
   return (
@@ -130,6 +152,43 @@ const Index = () => {
             </p>
           </div>
         )}
+
+        <div className="mt-6 space-y-2">
+          <Label htmlFor="layout" className="text-sm font-medium">
+            {t.layout}
+          </Label>
+          <Select value={layout} onValueChange={(value: any) => setLayout(value)}>
+            <SelectTrigger id="layout">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="list">
+                <div className="flex items-center gap-2">
+                  <Menu className="h-4 w-4" />
+                  {t.layoutList}
+                </div>
+              </SelectItem>
+              <SelectItem value="horizontal">
+                <div className="flex items-center gap-2">
+                  <Rows2 className="h-4 w-4" />
+                  {t.layoutHorizontal}
+                </div>
+              </SelectItem>
+              <SelectItem value="vertical">
+                <div className="flex items-center gap-2">
+                  <Columns2 className="h-4 w-4" />
+                  {t.layoutVertical}
+                </div>
+              </SelectItem>
+              <SelectItem value="grid">
+                <div className="flex items-center gap-2">
+                  <LayoutGrid className="h-4 w-4" />
+                  {t.layoutGrid}
+                </div>
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </Card>
       )}
 
@@ -137,7 +196,9 @@ const Index = () => {
       <div className="flex-1 overflow-y-auto p-4 pt-16">
         <ImageViewer 
           images={comparisonImages} 
-          onRemoveImage={removeFromComparison} 
+          onRemoveImage={removeFromComparison}
+          layout={layout === "list" ? "horizontal" : layout}
+          onReorderImages={handleReorderImages}
         />
       </div>
     </div>
