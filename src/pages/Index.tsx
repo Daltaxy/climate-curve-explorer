@@ -3,11 +3,14 @@ import { ParameterControl } from "@/components/ParameterControl";
 import { ImageViewer } from "@/components/ImageViewer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { Plus, Menu } from "lucide-react";
 import { toast } from "sonner";
 
 const Index = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [useGithub, setUseGithub] = useState(false);
   const [parameters, setParameters] = useState({
     albedo: "0.30" as "0.30" | "0.33",
     obliquity: "constante" as "constante" | "variable",
@@ -30,6 +33,11 @@ const Index = () => {
     const { tempType, latitude, eccentricity, obliquity, precession, albedo } = parameters;
     
     const filename = `${tempType}_lat${latitude}_exc${eccentricity}_obl${obliquity}_pre${precession}_alb${albedo}.png`;
+    
+    if (useGithub) {
+      return `https://raw.githubusercontent.com/Daltaxy/Milankovi-Cycles-and-their-effect-on-Temperature-Python-/main/${filename}`;
+    }
+    
     return `/images/${filename}`;
   };
 
@@ -66,7 +74,24 @@ const Index = () => {
           </p>
         </div>
 
-        <ParameterControl 
+        <div className="mb-6 p-4 bg-secondary/30 rounded-lg">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="image-source" className="text-sm font-medium">
+              Image Source
+            </Label>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-muted-foreground">Local</span>
+              <Switch
+                id="image-source"
+                checked={useGithub}
+                onCheckedChange={setUseGithub}
+              />
+              <span className="text-xs text-muted-foreground">GitHub</span>
+            </div>
+          </div>
+        </div>
+
+        <ParameterControl
           parameters={parameters} 
           onParameterChange={handleParameterChange} 
         />
