@@ -3,10 +3,11 @@ import { ParameterControl } from "@/components/ParameterControl";
 import { ImageViewer } from "@/components/ImageViewer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Plus } from "lucide-react";
+import { Plus, Menu } from "lucide-react";
 import { toast } from "sonner";
 
 const Index = () => {
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [parameters, setParameters] = useState({
     albedo: "0.30" as "0.30" | "0.33",
     obliquity: "constante" as "constante" | "variable",
@@ -45,8 +46,19 @@ const Index = () => {
 
   return (
     <div className="flex h-screen bg-background overflow-hidden">
+      {/* Sidebar Toggle Button */}
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+        className="absolute top-4 left-4 z-50"
+      >
+        <Menu className="h-5 w-5" />
+      </Button>
+
       {/* Sidebar */}
-      <Card className="w-80 flex-shrink-0 m-4 p-6 overflow-y-auto border-border bg-card">
+      {!sidebarCollapsed && (
+        <Card className="w-80 flex-shrink-0 m-4 p-6 overflow-y-auto border-border bg-card">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-primary mb-2">Temperature Curves</h1>
           <p className="text-sm text-muted-foreground">
@@ -75,9 +87,10 @@ const Index = () => {
           </div>
         )}
       </Card>
+      )}
 
       {/* Main Content */}
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 overflow-y-auto p-4 pt-16">
         <ImageViewer 
           images={comparisonImages} 
           onRemoveImage={removeFromComparison} 

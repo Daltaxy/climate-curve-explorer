@@ -1,4 +1,4 @@
-import { X } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface ImageViewerProps {
@@ -40,10 +40,10 @@ export const ImageViewer = ({ images, onRemoveImage }: ImageViewerProps) => {
           <Button
             variant="destructive"
             size="icon"
-            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+            className="absolute top-2 right-2 opacity-80 group-hover:opacity-100 transition-opacity"
             onClick={() => onRemoveImage(index)}
           >
-            <X className="h-4 w-4" />
+            <Trash2 className="h-4 w-4" />
           </Button>
         </div>
       ))}
