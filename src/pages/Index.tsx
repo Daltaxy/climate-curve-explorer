@@ -1,11 +1,87 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import { ParameterControl } from "@/components/ParameterControl";
+import { ImageViewer } from "@/components/ImageViewer";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Plus } from "lucide-react";
+import { toast } from "sonner";
 
 const Index = () => {
+  const [parameters, setParameters] = useState({
+    albedo: "0.30" as "0.30" | "0.33",
+    obliquity: "constante" as "constante" | "variable",
+    eccentricity: "constante" as "constante" | "variable",
+    precession: "constante" as "constante" | "variable",
+    latitude: "0" as "0" | "50" | "90",
+    tempType: "Temp" as "Temp" | "Var_temp",
+  });
+
+  const [comparisonImages, setComparisonImages] = useState<string[]>([]);
+
+  const handleParameterChange = (param: string, value: string) => {
+    setParameters((prev) => ({
+      ...prev,
+      [param]: value,
+    }));
+  };
+
+  const generateImagePath = () => {
+    const { tempType, latitude, eccentricity, obliquity, precession, albedo } = parameters;
+    
+    const filename = `${tempType}_lat${latitude}_exc${eccentricity}_obl${obliquity}_pre${precession}_alb${albedo}.png`;
+    return `/images/${filename}`;
+  };
+
+  const addToComparison = () => {
+    const imagePath = generateImagePath();
+    setComparisonImages((prev) => [...prev, imagePath]);
+    toast.success("Image added to comparison");
+  };
+
+  const removeFromComparison = (index: number) => {
+    setComparisonImages((prev) => prev.filter((_, i) => i !== index));
+    toast.info("Image removed from comparison");
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <div className="flex h-screen bg-background overflow-hidden">
+      {/* Sidebar */}
+      <Card className="w-80 flex-shrink-0 m-4 p-6 overflow-y-auto border-border bg-card">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-primary mb-2">Temperature Curves</h1>
+          <p className="text-sm text-muted-foreground">
+            Configure parameters and compare climate data visualizations
+          </p>
+        </div>
+
+        <ParameterControl 
+          parameters={parameters} 
+          onParameterChange={handleParameterChange} 
+        />
+
+        <Button 
+          onClick={addToComparison} 
+          className="w-full mt-6 bg-primary hover:bg-primary/90 text-primary-foreground"
+        >
+          <Plus className="mr-2 h-4 w-4" />
+          Add to Comparison
+        </Button>
+
+        {comparisonImages.length > 0 && (
+          <div className="mt-4 p-3 bg-secondary/50 rounded-lg">
+            <p className="text-sm text-muted-foreground">
+              {comparisonImages.length} image{comparisonImages.length !== 1 ? "s" : ""} in comparison
+            </p>
+          </div>
+        )}
+      </Card>
+
+      {/* Main Content */}
+      <div className="flex-1 overflow-y-auto p-4">
+        <ImageViewer 
+          images={comparisonImages} 
+          onRemoveImage={removeFromComparison} 
+        />
       </div>
     </div>
   );
