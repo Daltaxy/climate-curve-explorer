@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+} from "@/components/ui/resizable";
 
 interface ImageViewerProps {
   images: string[];
@@ -94,10 +99,79 @@ export const ImageViewer = ({ images, onRemoveImage, layout, onReorderImages }: 
     const maxImages = layout === "grid" ? 4 : 2;
     const displayImages = images.slice(0, maxImages);
     
+    if (layout === "grid") {
+      return (
+        <div className="h-full">
+          <ResizablePanelGroup direction="vertical">
+            <ResizablePanel defaultSize={50} minSize={20}>
+              <ResizablePanelGroup direction="horizontal">
+                <ResizablePanel defaultSize={50} minSize={20}>
+                  <div className="h-full p-2">
+                    {displayImages[0] && renderImage(displayImages[0], 0)}
+                  </div>
+                </ResizablePanel>
+                {displayImages[1] && (
+                  <>
+                    <ResizableHandle withHandle />
+                    <ResizablePanel defaultSize={50} minSize={20}>
+                      <div className="h-full p-2">
+                        {renderImage(displayImages[1], 1)}
+                      </div>
+                    </ResizablePanel>
+                  </>
+                )}
+              </ResizablePanelGroup>
+            </ResizablePanel>
+            {displayImages[2] && (
+              <>
+                <ResizableHandle withHandle />
+                <ResizablePanel defaultSize={50} minSize={20}>
+                  <ResizablePanelGroup direction="horizontal">
+                    <ResizablePanel defaultSize={50} minSize={20}>
+                      <div className="h-full p-2">
+                        {renderImage(displayImages[2], 2)}
+                      </div>
+                    </ResizablePanel>
+                    {displayImages[3] && (
+                      <>
+                        <ResizableHandle withHandle />
+                        <ResizablePanel defaultSize={50} minSize={20}>
+                          <div className="h-full p-2">
+                            {renderImage(displayImages[3], 3)}
+                          </div>
+                        </ResizablePanel>
+                      </>
+                    )}
+                  </ResizablePanelGroup>
+                </ResizablePanel>
+              </>
+            )}
+          </ResizablePanelGroup>
+        </div>
+      );
+    }
+    
     return (
-      <div className={getLayoutClasses()}>
-        {displayImages.map((image, index) => renderImage(image, index))}
-      </div>
+      <ResizablePanelGroup 
+        direction={layout === "horizontal" ? "vertical" : "horizontal"}
+        className="h-full"
+      >
+        <ResizablePanel defaultSize={50} minSize={20}>
+          <div className="h-full p-2">
+            {displayImages[0] && renderImage(displayImages[0], 0)}
+          </div>
+        </ResizablePanel>
+        {displayImages[1] && (
+          <>
+            <ResizableHandle withHandle />
+            <ResizablePanel defaultSize={50} minSize={20}>
+              <div className="h-full p-2">
+                {renderImage(displayImages[1], 1)}
+              </div>
+            </ResizablePanel>
+          </>
+        )}
+      </ResizablePanelGroup>
     );
   }
 

@@ -80,22 +80,6 @@ export const ParameterControl = ({ parameters, onParameterChange, language = "en
       </div>
 
       <div>
-        <h3 className="text-sm font-semibold text-foreground mb-4">{t.obliquity}</h3>
-        <div className="flex items-center justify-between">
-          <Label htmlFor="obliquity" className="text-sm text-muted-foreground">
-            {parameters.obliquity === "constante" ? t.constant : t.variable}
-          </Label>
-          <Switch
-            id="obliquity"
-            checked={parameters.obliquity === "variable"}
-            onCheckedChange={(checked) => 
-              onParameterChange("obliquity", checked ? "variable" : "constante")
-            }
-          />
-        </div>
-      </div>
-
-      <div>
         <h3 className="text-sm font-semibold text-foreground mb-4">{t.eccentricity}</h3>
         <div className="flex items-center justify-between">
           <Label htmlFor="eccentricity" className="text-sm text-muted-foreground">
@@ -106,6 +90,22 @@ export const ParameterControl = ({ parameters, onParameterChange, language = "en
             checked={parameters.eccentricity === "variable"}
             onCheckedChange={(checked) => 
               onParameterChange("eccentricity", checked ? "variable" : "constante")
+            }
+          />
+        </div>
+      </div>
+
+      <div>
+        <h3 className="text-sm font-semibold text-foreground mb-4">{t.obliquity}</h3>
+        <div className="flex items-center justify-between">
+          <Label htmlFor="obliquity" className="text-sm text-muted-foreground">
+            {parameters.obliquity === "constante" ? t.constant : t.variable}
+          </Label>
+          <Switch
+            id="obliquity"
+            checked={parameters.obliquity === "variable"}
+            onCheckedChange={(checked) => 
+              onParameterChange("obliquity", checked ? "variable" : "constante")
             }
           />
         </div>

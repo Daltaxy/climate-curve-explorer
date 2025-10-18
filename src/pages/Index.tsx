@@ -93,16 +93,6 @@ const Index = () => {
 
   return (
     <div className="flex h-screen bg-background overflow-hidden">
-      {/* Sidebar Toggle Button */}
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-        className="absolute top-4 left-4 z-50"
-      >
-        <Menu className="h-5 w-5" />
-      </Button>
-
       {/* Sidebar */}
       {!sidebarCollapsed && (
         <Card className="w-80 flex-shrink-0 m-4 p-5 overflow-y-auto border-border bg-card">
@@ -193,13 +183,25 @@ const Index = () => {
       )}
 
       {/* Main Content */}
-      <div className="flex-1 overflow-y-auto p-4 pt-16">
-        <ImageViewer 
-          images={comparisonImages} 
-          onRemoveImage={removeFromComparison}
-          layout={layout === "list" ? "horizontal" : layout}
-          onReorderImages={handleReorderImages}
-        />
+      <div className="flex-1 overflow-hidden relative">
+        {/* Menu Button at top */}
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+          className="absolute top-4 left-4 z-50"
+        >
+          <Menu className="h-5 w-5" />
+        </Button>
+        
+        <div className="h-full p-4 pt-16 overflow-y-auto">
+          <ImageViewer 
+            images={comparisonImages} 
+            onRemoveImage={removeFromComparison}
+            layout={layout === "list" ? "horizontal" : layout}
+            onReorderImages={handleReorderImages}
+          />
+        </div>
       </div>
     </div>
   );
