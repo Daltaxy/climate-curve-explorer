@@ -105,15 +105,15 @@ const Index = () => {
 
       {/* Sidebar */}
       {!sidebarCollapsed && (
-        <Card className="w-80 flex-shrink-0 m-4 p-6 overflow-y-auto border-border bg-card">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-primary mb-2">{t.title}</h1>
-          <p className="text-sm text-muted-foreground">
+        <Card className="w-80 flex-shrink-0 m-4 p-5 overflow-y-auto border-border bg-card">
+        <div className="mb-4">
+          <h1 className="text-2xl font-bold text-primary mb-1">{t.title}</h1>
+          <p className="text-xs text-muted-foreground">
             {t.subtitle}
           </p>
         </div>
 
-        <div className="mb-6 p-4 bg-secondary/30 rounded-lg">
+        <div className="mb-4 p-3 bg-secondary/30 rounded-lg space-y-3">
           <div className="flex items-center justify-between">
             <Label htmlFor="language" className="text-sm font-medium">
               <Globe className="inline h-4 w-4 mr-2" />
@@ -129,6 +129,43 @@ const Index = () => {
               <span className="text-xs text-muted-foreground">FR</span>
             </div>
           </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="layout" className="text-sm font-medium">
+              {t.layout}
+            </Label>
+            <Select value={layout} onValueChange={(value: any) => setLayout(value)}>
+              <SelectTrigger id="layout" className="h-9">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="list">
+                  <div className="flex items-center gap-2">
+                    <Menu className="h-4 w-4" />
+                    {t.layoutList}
+                  </div>
+                </SelectItem>
+                <SelectItem value="horizontal">
+                  <div className="flex items-center gap-2">
+                    <Rows2 className="h-4 w-4" />
+                    {t.layoutHorizontal}
+                  </div>
+                </SelectItem>
+                <SelectItem value="vertical">
+                  <div className="flex items-center gap-2">
+                    <Columns2 className="h-4 w-4" />
+                    {t.layoutVertical}
+                  </div>
+                </SelectItem>
+                <SelectItem value="grid">
+                  <div className="flex items-center gap-2">
+                    <LayoutGrid className="h-4 w-4" />
+                    {t.layoutGrid}
+                  </div>
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         <ParameterControl
@@ -139,56 +176,19 @@ const Index = () => {
 
         <Button 
           onClick={addToComparison} 
-          className="w-full mt-6 bg-primary hover:bg-primary/90 text-primary-foreground"
+          className="w-full mt-4 bg-primary hover:bg-primary/90 text-primary-foreground"
         >
           <Plus className="mr-2 h-4 w-4" />
           {t.addToComparison}
         </Button>
 
         {comparisonImages.length > 0 && (
-          <div className="mt-4 p-3 bg-secondary/50 rounded-lg">
-            <p className="text-sm text-muted-foreground">
+          <div className="mt-3 p-2.5 bg-secondary/50 rounded-lg">
+            <p className="text-xs text-muted-foreground">
               {comparisonImages.length} {t.imagesInComparison}
             </p>
           </div>
         )}
-
-        <div className="mt-6 space-y-2">
-          <Label htmlFor="layout" className="text-sm font-medium">
-            {t.layout}
-          </Label>
-          <Select value={layout} onValueChange={(value: any) => setLayout(value)}>
-            <SelectTrigger id="layout">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="list">
-                <div className="flex items-center gap-2">
-                  <Menu className="h-4 w-4" />
-                  {t.layoutList}
-                </div>
-              </SelectItem>
-              <SelectItem value="horizontal">
-                <div className="flex items-center gap-2">
-                  <Rows2 className="h-4 w-4" />
-                  {t.layoutHorizontal}
-                </div>
-              </SelectItem>
-              <SelectItem value="vertical">
-                <div className="flex items-center gap-2">
-                  <Columns2 className="h-4 w-4" />
-                  {t.layoutVertical}
-                </div>
-              </SelectItem>
-              <SelectItem value="grid">
-                <div className="flex items-center gap-2">
-                  <LayoutGrid className="h-4 w-4" />
-                  {t.layoutGrid}
-                </div>
-              </SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
       </Card>
       )}
 
