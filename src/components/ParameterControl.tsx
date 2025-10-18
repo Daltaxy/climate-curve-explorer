@@ -12,16 +12,46 @@ interface ParameterControlProps {
     tempType: "Temp" | "Var_temp";
   };
   onParameterChange: (param: string, value: string) => void;
+  language?: "en" | "fr";
 }
 
-export const ParameterControl = ({ parameters, onParameterChange }: ParameterControlProps) => {
+const translations = {
+  en: {
+    tempType: "Temperature Type",
+    temperature: "Temperature (°C)",
+    tempVariation: "Temperature Variation",
+    latitude: "Latitude",
+    eccentricity: "Eccentricity",
+    constant: "Constant",
+    variable: "Variable",
+    obliquity: "Obliquity",
+    precession: "Precession",
+    albedo: "Albedo",
+  },
+  fr: {
+    tempType: "Type de Température",
+    temperature: "Température (°C)",
+    tempVariation: "Variation de Température",
+    latitude: "Latitude",
+    eccentricity: "Excentricité",
+    constant: "Constante",
+    variable: "Variable",
+    obliquity: "Obliquité",
+    precession: "Précession",
+    albedo: "Albédo",
+  },
+};
+
+export const ParameterControl = ({ parameters, onParameterChange, language = "en" }: ParameterControlProps) => {
+  const t = translations[language];
+
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-sm font-semibold text-foreground mb-4">Temperature Type</h3>
+        <h3 className="text-sm font-semibold text-foreground mb-4">{t.tempType}</h3>
         <div className="flex items-center justify-between">
           <Label htmlFor="temp-type" className="text-sm text-muted-foreground">
-            {parameters.tempType === "Temp" ? "Temperature (°C)" : "Temperature Variation"}
+            {parameters.tempType === "Temp" ? t.temperature : t.tempVariation}
           </Label>
           <Switch
             id="temp-type"
@@ -34,7 +64,7 @@ export const ParameterControl = ({ parameters, onParameterChange }: ParameterCon
       </div>
 
       <div>
-        <h3 className="text-sm font-semibold text-foreground mb-4">Albedo</h3>
+        <h3 className="text-sm font-semibold text-foreground mb-4">{t.albedo}</h3>
         <div className="flex items-center justify-between">
           <Label htmlFor="albedo" className="text-sm text-muted-foreground">
             {parameters.albedo === "0.30" ? "0.30" : "0.33"}
@@ -50,10 +80,10 @@ export const ParameterControl = ({ parameters, onParameterChange }: ParameterCon
       </div>
 
       <div>
-        <h3 className="text-sm font-semibold text-foreground mb-4">Obliquity</h3>
+        <h3 className="text-sm font-semibold text-foreground mb-4">{t.obliquity}</h3>
         <div className="flex items-center justify-between">
           <Label htmlFor="obliquity" className="text-sm text-muted-foreground">
-            {parameters.obliquity === "constante" ? "Constant" : "Variable"}
+            {parameters.obliquity === "constante" ? t.constant : t.variable}
           </Label>
           <Switch
             id="obliquity"
@@ -66,10 +96,10 @@ export const ParameterControl = ({ parameters, onParameterChange }: ParameterCon
       </div>
 
       <div>
-        <h3 className="text-sm font-semibold text-foreground mb-4">Eccentricity</h3>
+        <h3 className="text-sm font-semibold text-foreground mb-4">{t.eccentricity}</h3>
         <div className="flex items-center justify-between">
           <Label htmlFor="eccentricity" className="text-sm text-muted-foreground">
-            {parameters.eccentricity === "constante" ? "Constant" : "Variable"}
+            {parameters.eccentricity === "constante" ? t.constant : t.variable}
           </Label>
           <Switch
             id="eccentricity"
@@ -82,10 +112,10 @@ export const ParameterControl = ({ parameters, onParameterChange }: ParameterCon
       </div>
 
       <div>
-        <h3 className="text-sm font-semibold text-foreground mb-4">Precession</h3>
+        <h3 className="text-sm font-semibold text-foreground mb-4">{t.precession}</h3>
         <div className="flex items-center justify-between">
           <Label htmlFor="precession" className="text-sm text-muted-foreground">
-            {parameters.precession === "constante" ? "Constant" : "Variable"}
+            {parameters.precession === "constante" ? t.constant : t.variable}
           </Label>
           <Switch
             id="precession"
@@ -98,7 +128,7 @@ export const ParameterControl = ({ parameters, onParameterChange }: ParameterCon
       </div>
 
       <div>
-        <h3 className="text-sm font-semibold text-foreground mb-4">Latitude</h3>
+        <h3 className="text-sm font-semibold text-foreground mb-4">{t.latitude}</h3>
         <RadioGroup 
           value={parameters.latitude} 
           onValueChange={(value) => onParameterChange("latitude", value)}

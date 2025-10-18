@@ -5,12 +5,33 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Plus, Menu } from "lucide-react";
+import { Plus, Menu, Globe } from "lucide-react";
 import { toast } from "sonner";
+
+const translations = {
+  en: {
+    title: "Temperature Curves",
+    subtitle: "Configure parameters and compare climate data visualizations",
+    addToComparison: "Add to Comparison",
+    imagesInComparison: "image(s) in comparison",
+    imageAdded: "Image added to comparison",
+    imageRemoved: "Image removed from comparison",
+    language: "Language",
+  },
+  fr: {
+    title: "Courbes de Température",
+    subtitle: "Configurez les paramètres et comparez les visualisations de données climatiques",
+    addToComparison: "Ajouter à la Comparaison",
+    imagesInComparison: "image(s) en comparaison",
+    imageAdded: "Image ajoutée à la comparaison",
+    imageRemoved: "Image retirée de la comparaison",
+    language: "Langue",
+  },
+};
 
 const Index = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [useGithub, setUseGithub] = useState(false);
+  const [language, setLanguage] = useState<"en" | "fr">("en");
   const [parameters, setParameters] = useState({
     albedo: "0.30" as "0.30" | "0.33",
     obliquity: "constante" as "constante" | "variable",
@@ -29,27 +50,23 @@ const Index = () => {
     }));
   };
 
+  const t = translations[language];
+
   const generateImagePath = () => {
     const { tempType, latitude, eccentricity, obliquity, precession, albedo } = parameters;
-    
     const filename = `${tempType}_lat${latitude}_exc${eccentricity}_obl${obliquity}_pre${precession}_alb${albedo}.png`;
-    
-    if (useGithub) {
-      return `https://raw.githubusercontent.com/Daltaxy/Milankovi-Cycles-and-their-effect-on-Temperature-Python-/main/${filename}`;
-    }
-    
-    return `/images/${filename}`;
+    return `https://raw.githubusercontent.com/Daltaxy/Milankovi-Cycles-and-their-effect-on-Temperature-Python-/main/${filename}`;
   };
 
   const addToComparison = () => {
     const imagePath = generateImagePath();
     setComparisonImages((prev) => [...prev, imagePath]);
-    toast.success("Image added to comparison");
+    toast.success(t.imageAdded);
   };
 
   const removeFromComparison = (index: number) => {
     setComparisonImages((prev) => prev.filter((_, i) => i !== index));
-    toast.info("Image removed from comparison");
+    toast.info(t.imageRemoved);
   };
 
   return (
@@ -68,32 +85,34 @@ const Index = () => {
       {!sidebarCollapsed && (
         <Card className="w-80 flex-shrink-0 m-4 p-6 overflow-y-auto border-border bg-card">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-primary mb-2">Temperature Curves</h1>
+          <h1 className="text-2xl font-bold text-primary mb-2">{t.title}</h1>
           <p className="text-sm text-muted-foreground">
-            Configure parameters and compare climate data visualizations
+            {t.subtitle}
           </p>
         </div>
 
         <div className="mb-6 p-4 bg-secondary/30 rounded-lg">
           <div className="flex items-center justify-between">
-            <Label htmlFor="image-source" className="text-sm font-medium">
-              Image Source
+            <Label htmlFor="language" className="text-sm font-medium">
+              <Globe className="inline h-4 w-4 mr-2" />
+              {t.language}
             </Label>
             <div className="flex items-center gap-2">
-              <span className="text-xs text-muted-foreground">Local</span>
+              <span className="text-xs text-muted-foreground">EN</span>
               <Switch
-                id="image-source"
-                checked={useGithub}
-                onCheckedChange={setUseGithub}
+                id="language"
+                checked={language === "fr"}
+                onCheckedChange={(checked) => setLanguage(checked ? "fr" : "en")}
               />
-              <span className="text-xs text-muted-foreground">GitHub</span>
+              <span className="text-xs text-muted-foreground">FR</span>
             </div>
           </div>
         </div>
 
         <ParameterControl
           parameters={parameters} 
-          onParameterChange={handleParameterChange} 
+          onParameterChange={handleParameterChange}
+          language={language}
         />
 
         <Button 
@@ -101,13 +120,13 @@ const Index = () => {
           className="w-full mt-6 bg-primary hover:bg-primary/90 text-primary-foreground"
         >
           <Plus className="mr-2 h-4 w-4" />
-          Add to Comparison
+          {t.addToComparison}
         </Button>
 
         {comparisonImages.length > 0 && (
           <div className="mt-4 p-3 bg-secondary/50 rounded-lg">
             <p className="text-sm text-muted-foreground">
-              {comparisonImages.length} image{comparisonImages.length !== 1 ? "s" : ""} in comparison
+              {comparisonImages.length} {t.imagesInComparison}
             </p>
           </div>
         )}
