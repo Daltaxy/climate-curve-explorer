@@ -46,6 +46,57 @@ const translations = {
   },
 };
 
+const temperatureData: Record<string, { tMin: number; tMax: number; amplitude: number }> = {
+  "0.30-0-constante-constante-constante": { tMin: 19.6, tMax: 46.4, amplitude: 26.8 },
+  "0.30-0-constante-constante-variable": { tMin: 19.6, tMax: 46.4, amplitude: 26.9 },
+  "0.30-0-constante-variable-constante": { tMin: 14.9, tMax: 18.8, amplitude: 3.9 },
+  "0.30-0-constante-variable-variable": { tMin: 14.9, tMax: 18.9, amplitude: 4.0 },
+  "0.30-0-variable-constante-constante": { tMin: 19.6, tMax: 51.5, amplitude: 31.9 },
+  "0.30-0-variable-constante-variable": { tMin: 19.6, tMax: 51.7, amplitude: 32.1 },
+  "0.30-0-variable-variable-constante": { tMin: 11.9, tMax: 22.9, amplitude: 11.0 },
+  "0.30-0-variable-variable-variable": { tMin: 11.8, tMax: 23.1, amplitude: 11.4 },
+  "0.30-50-constante-constante-constante": { tMin: -28.6, tMax: 32.7, amplitude: 61.3 },
+  "0.30-50-constante-constante-variable": { tMin: -28.7, tMax: 32.7, amplitude: 61.3 },
+  "0.30-50-constante-variable-constante": { tMin: 14.9, tMax: 19.4, amplitude: 4.5 },
+  "0.30-50-constante-variable-variable": { tMin: 14.9, tMax: 19.5, amplitude: 4.5 },
+  "0.30-50-variable-constante-constante": { tMin: -31.9, tMax: 32.7, amplitude: 64.5 },
+  "0.30-50-variable-constante-variable": { tMin: -32.1, tMax: 32.7, amplitude: 64.7 },
+  "0.30-50-variable-variable-constante": { tMin: 11.5, tMax: 23.5, amplitude: 12.0 },
+  "0.30-50-variable-variable-variable": { tMin: 11.3, tMax: 23.6, amplitude: 12.3 },
+  "0.30-90-constante-constante-constante": { tMin: -69.5, tMax: 17.9, amplitude: 87.4 },
+  "0.30-90-constante-constante-variable": { tMin: -69.6, tMax: 17.9, amplitude: 87.5 },
+  "0.30-90-constante-variable-constante": { tMin: 14.9, tMax: 19.7, amplitude: 4.8 },
+  "0.30-90-constante-variable-variable": { tMin: 14.9, tMax: 19.8, amplitude: 4.9 },
+  "0.30-90-variable-constante-constante": { tMin: -71.6, tMax: 17.9, amplitude: 89.4 },
+  "0.30-90-variable-constante-variable": { tMin: -71.8, tMax: 17.9, amplitude: 89.6 },
+  "0.30-90-variable-variable-constante": { tMin: 11.5, tMax: 23.8, amplitude: 12.4 },
+  "0.30-90-variable-variable-variable": { tMin: 11.0, tMax: 23.9, amplitude: 12.9 },
+  "0.33-0-constante-constante-constante": { tMin: 28.9, tMax: 108.0, amplitude: 79.1 },
+  "0.33-0-constante-constante-variable": { tMin: 28.9, tMax: 108.0, amplitude: 79.2 },
+  "0.33-0-constante-variable-constante": { tMin: 22.4, tMax: 68.6, amplitude: 46.2 },
+  "0.33-0-constante-variable-variable": { tMin: 22.4, tMax: 68.6, amplitude: 46.2 },
+  "0.33-0-variable-constante-constante": { tMin: 28.9, tMax: 115.2, amplitude: 86.4 },
+  "0.33-0-variable-constante-variable": { tMin: 28.9, tMax: 115.6, amplitude: 86.7 },
+  "0.33-0-variable-variable-constante": { tMin: 22.4, tMax: 74.4, amplitude: 52.0 },
+  "0.33-0-variable-variable-variable": { tMin: 22.4, tMax: 74.7, amplitude: 52.3 },
+  "0.33-50-constante-constante-constante": { tMin: 0.8, tMax: 75.7, amplitude: 74.9 },
+  "0.33-50-constante-constante-variable": { tMin: 0.7, tMax: 75.7, amplitude: 75.0 },
+  "0.33-50-constante-variable-constante": { tMin: 23.3, tMax: 69.4, amplitude: 46.2 },
+  "0.33-50-constante-variable-variable": { tMin: 23.3, tMax: 69.5, amplitude: 46.2 },
+  "0.33-50-variable-constante-constante": { tMin: -3.9, tMax: 77.6, amplitude: 81.5 },
+  "0.33-50-variable-constante-variable": { tMin: -4.1, tMax: 77.9, amplitude: 82.1 },
+  "0.33-50-variable-variable-constante": { tMin: 23.3, tMax: 75.3, amplitude: 52.0 },
+  "0.33-50-variable-variable-variable": { tMin: 23.3, tMax: 75.4, amplitude: 52.2 },
+  "0.33-90-constante-constante-constante": { tMin: -57.6, tMax: 52.4, amplitude: 110.0 },
+  "0.33-90-constante-constante-variable": { tMin: -57.7, tMax: 52.4, amplitude: 110.1 },
+  "0.33-90-constante-variable-constante": { tMin: 23.3, tMax: 69.9, amplitude: 46.6 },
+  "0.33-90-constante-variable-variable": { tMin: 23.3, tMax: 69.9, amplitude: 46.7 },
+  "0.33-90-variable-constante-constante": { tMin: -60.6, tMax: 52.4, amplitude: 113.0 },
+  "0.33-90-variable-constante-variable": { tMin: -60.8, tMax: 52.4, amplitude: 113.3 },
+  "0.33-90-variable-variable-constante": { tMin: 23.3, tMax: 75.7, amplitude: 52.5 },
+  "0.33-90-variable-variable-variable": { tMin: 23.3, tMax: 75.9, amplitude: 52.6 },
+};
+
 const Index = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [language, setLanguage] = useState<"en" | "fr">("en");
@@ -90,6 +141,13 @@ const Index = () => {
   const handleReorderImages = (newOrder: string[]) => {
     setComparisonImages(newOrder);
   };
+
+  const getCurrentTemperatureRange = () => {
+    const key = `${parameters.albedo}-${parameters.latitude}-${parameters.eccentricity}-${parameters.obliquity}-${parameters.precession}`;
+    return temperatureData[key];
+  };
+
+  const tempRange = getCurrentTemperatureRange();
 
   return (
     <div className="flex h-screen bg-background overflow-hidden">
@@ -164,6 +222,34 @@ const Index = () => {
           language={language}
         />
 
+        {tempRange && (
+          <div className="mt-3 p-3 bg-accent/20 rounded-lg border border-border">
+            <h3 className="text-xs font-semibold mb-2 text-foreground">
+              {language === "en" ? "Temperature Range" : "Plage de Température"}
+            </h3>
+            <div className="space-y-1 text-xs">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">
+                  {language === "en" ? "Min:" : "Min:"}
+                </span>
+                <span className="font-medium text-blue-500">{tempRange.tMin}°C</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">
+                  {language === "en" ? "Max:" : "Max:"}
+                </span>
+                <span className="font-medium text-red-500">{tempRange.tMax}°C</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">
+                  {language === "en" ? "Amplitude:" : "Amplitude:"}
+                </span>
+                <span className="font-medium">{tempRange.amplitude}K</span>
+              </div>
+            </div>
+          </div>
+        )}
+
         <Button 
           onClick={addToComparison} 
           className="w-full mt-4 bg-primary hover:bg-primary/90 text-primary-foreground"
@@ -183,7 +269,7 @@ const Index = () => {
       )}
 
       {/* Main Content */}
-      <div className="flex-1 overflow-hidden relative">
+      <div className="flex-1 flex flex-col overflow-hidden relative">
         {/* Menu Button at top */}
         <Button
           variant="ghost"
@@ -194,7 +280,7 @@ const Index = () => {
           <Menu className="h-5 w-5" />
         </Button>
         
-        <div className="h-full p-4 pt-16 overflow-y-auto">
+        <div className="flex-1 p-4 pt-16 overflow-auto">
           <ImageViewer 
             images={comparisonImages} 
             onRemoveImage={removeFromComparison}
