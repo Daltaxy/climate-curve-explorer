@@ -101,8 +101,8 @@ export const ImageViewer = ({ images, onRemoveImage, layout, onReorderImages }: 
     
     if (layout === "grid") {
       return (
-        <div className="h-full">
-          <ResizablePanelGroup direction="vertical">
+        <div className="min-h-screen">
+          <ResizablePanelGroup direction="vertical" className="min-h-screen">
             <ResizablePanel defaultSize={50} minSize={20}>
               <ResizablePanelGroup direction="horizontal">
                 <ResizablePanel defaultSize={50} minSize={20}>
@@ -154,7 +154,7 @@ export const ImageViewer = ({ images, onRemoveImage, layout, onReorderImages }: 
     return (
       <ResizablePanelGroup 
         direction={layout === "horizontal" ? "vertical" : "horizontal"}
-        className="h-full"
+        className="min-h-screen"
       >
         <ResizablePanel defaultSize={50} minSize={20}>
           <div className="h-full p-2">
