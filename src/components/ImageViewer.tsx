@@ -6,6 +6,7 @@ import {
   ResizablePanel,
   ResizableHandle,
 } from "@/components/ui/resizable";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ImageViewerProps {
   images: string[];
@@ -101,22 +102,26 @@ export const ImageViewer = ({ images, onRemoveImage, layout, onReorderImages }: 
     
     if (layout === "grid") {
       return (
-        <div className="min-h-screen">
-          <ResizablePanelGroup direction="vertical" className="min-h-screen">
+        <div className="h-full min-h-0">
+          <ResizablePanelGroup direction="vertical" className="h-full min-h-0">
             <ResizablePanel defaultSize={50} minSize={20}>
               <ResizablePanelGroup direction="horizontal">
                 <ResizablePanel defaultSize={50} minSize={20}>
-                  <div className="h-full p-2">
-                    {displayImages[0] && renderImage(displayImages[0], 0)}
-                  </div>
+                  <ScrollArea className="h-full">
+                    <div className="p-2">
+                      {displayImages[0] && renderImage(displayImages[0], 0)}
+                    </div>
+                  </ScrollArea>
                 </ResizablePanel>
                 {displayImages[1] && (
                   <>
                     <ResizableHandle withHandle />
                     <ResizablePanel defaultSize={50} minSize={20}>
-                      <div className="h-full p-2">
-                        {renderImage(displayImages[1], 1)}
-                      </div>
+                      <ScrollArea className="h-full">
+                        <div className="p-2">
+                          {renderImage(displayImages[1], 1)}
+                        </div>
+                      </ScrollArea>
                     </ResizablePanel>
                   </>
                 )}
@@ -128,17 +133,21 @@ export const ImageViewer = ({ images, onRemoveImage, layout, onReorderImages }: 
                 <ResizablePanel defaultSize={50} minSize={20}>
                   <ResizablePanelGroup direction="horizontal">
                     <ResizablePanel defaultSize={50} minSize={20}>
-                      <div className="h-full p-2">
-                        {renderImage(displayImages[2], 2)}
-                      </div>
+                      <ScrollArea className="h-full">
+                        <div className="p-2">
+                          {renderImage(displayImages[2], 2)}
+                        </div>
+                      </ScrollArea>
                     </ResizablePanel>
                     {displayImages[3] && (
                       <>
                         <ResizableHandle withHandle />
                         <ResizablePanel defaultSize={50} minSize={20}>
-                          <div className="h-full p-2">
-                            {renderImage(displayImages[3], 3)}
-                          </div>
+                          <ScrollArea className="h-full">
+                            <div className="p-2">
+                              {renderImage(displayImages[3], 3)}
+                            </div>
+                          </ScrollArea>
                         </ResizablePanel>
                       </>
                     )}
@@ -154,20 +163,24 @@ export const ImageViewer = ({ images, onRemoveImage, layout, onReorderImages }: 
     return (
       <ResizablePanelGroup 
         direction={layout === "horizontal" ? "vertical" : "horizontal"}
-        className="min-h-screen"
+        className="h-full min-h-0"
       >
         <ResizablePanel defaultSize={50} minSize={20}>
-          <div className="h-full p-2">
-            {displayImages[0] && renderImage(displayImages[0], 0)}
-          </div>
+          <ScrollArea className="h-full">
+            <div className="p-2">
+              {displayImages[0] && renderImage(displayImages[0], 0)}
+            </div>
+          </ScrollArea>
         </ResizablePanel>
         {displayImages[1] && (
           <>
             <ResizableHandle withHandle />
             <ResizablePanel defaultSize={50} minSize={20}>
-              <div className="h-full p-2">
+            <ScrollArea className="h-full">
+              <div className="p-2">
                 {renderImage(displayImages[1], 1)}
               </div>
+            </ScrollArea>
             </ResizablePanel>
           </>
         )}
@@ -176,8 +189,10 @@ export const ImageViewer = ({ images, onRemoveImage, layout, onReorderImages }: 
   }
 
   return (
-    <div className="space-y-4 pb-4">
-      {images.map((image, index) => renderImage(image, index))}
-    </div>
+    <ScrollArea className="h-full">
+      <div className="space-y-4 p-4 pb-8">
+        {images.map((image, index) => renderImage(image, index))}
+      </div>
+    </ScrollArea>
   );
 };
