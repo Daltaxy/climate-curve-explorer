@@ -4,6 +4,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 interface ParameterControlProps {
   parameters: {
+    scenario: "base" | "aqua" | "dry";
     albedo: "0.30" | "0.33";
     obliquity: "constante" | "variable";
     eccentricity: "constante" | "variable";
@@ -17,6 +18,10 @@ interface ParameterControlProps {
 
 const translations = {
   en: {
+    scenario: "Scenario",
+    base: "Earth (Base)",
+    aqua: "Aqua Planet",
+    dry: "Dry Planet",
     tempType: "Temperature Type",
     temperature: "Temperature (°C)",
     tempVariation: "Temperature Variation",
@@ -29,6 +34,10 @@ const translations = {
     albedo: "Albedo",
   },
   fr: {
+    scenario: "Scénario",
+    base: "Terre (Base)",
+    aqua: "Planète Aquatique",
+    dry: "Planète Sèche",
     tempType: "Type de Température",
     temperature: "Température (°C)",
     tempVariation: "Variation de Température",
@@ -47,6 +56,34 @@ export const ParameterControl = ({ parameters, onParameterChange, language = "en
 
   return (
     <div className="space-y-6">
+      <div>
+        <h3 className="text-sm font-semibold text-foreground mb-4">{t.scenario}</h3>
+        <RadioGroup 
+          value={parameters.scenario} 
+          onValueChange={(value) => onParameterChange("scenario", value)}
+          className="space-y-2"
+        >
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="base" id="scenario-base" />
+            <Label htmlFor="scenario-base" className="text-sm text-muted-foreground cursor-pointer">
+              {t.base}
+            </Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="aqua" id="scenario-aqua" />
+            <Label htmlFor="scenario-aqua" className="text-sm text-muted-foreground cursor-pointer">
+              {t.aqua}
+            </Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="dry" id="scenario-dry" />
+            <Label htmlFor="scenario-dry" className="text-sm text-muted-foreground cursor-pointer">
+              {t.dry}
+            </Label>
+          </div>
+        </RadioGroup>
+      </div>
+
       <div>
         <h3 className="text-sm font-semibold text-foreground mb-4">{t.tempType}</h3>
         <div className="flex items-center justify-between">

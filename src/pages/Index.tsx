@@ -102,6 +102,7 @@ const Index = () => {
   const [language, setLanguage] = useState<"en" | "fr">("en");
   const [layout, setLayout] = useState<"list" | "horizontal" | "vertical" | "grid">("list");
   const [parameters, setParameters] = useState({
+    scenario: "base" as "base" | "aqua" | "dry",
     albedo: "0.30" as "0.30" | "0.33",
     obliquity: "constante" as "constante" | "variable",
     eccentricity: "constante" as "constante" | "variable",
@@ -122,9 +123,12 @@ const Index = () => {
   const t = translations[language];
 
   const generateImagePath = () => {
-    const { tempType, latitude, eccentricity, obliquity, precession, albedo } = parameters;
-    const filename = `${tempType}_lat${latitude}_exc${eccentricity}_obl${obliquity}_pre${precession}_alb${albedo}.png`;
-    return `https://raw.githubusercontent.com/Daltaxy/Milankovi-Cycles-and-their-effect-on-Temperature-Python-/main/${filename}`;
+    const { tempType, latitude, eccentricity, obliquity, precession, albedo, scenario } = parameters;
+    const excBool = eccentricity === "variable" ? "V" : "F";
+    const oblBool = obliquity === "variable" ? "V" : "F";
+    const preBool = precession === "variable" ? "V" : "F";
+    const filename = `${tempType}_lat${latitude}_alb${albedo}_exc${excBool}_obl${oblBool}_pre${preBool}_scen_${scenario}.png`;
+    return `https://raw.githubusercontent.com/Daltaxy/Milankovi-Cycles-and-their-effect-on-Temperature-Python-/main/${scenario}/${filename}`;
   };
 
   const addToComparison = () => {
