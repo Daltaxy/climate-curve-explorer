@@ -52,16 +52,18 @@ export const TemperatureSlider = ({ parameters, language }: TemperatureSliderPro
         }
         
         const csvText = await response.text();
-        const lines = csvText.split('\n');
-        
-        // Find the line for the selected year
-        const dataLine = lines.find(line => {
-          const parts = line.split(';');
+        const lines = csvText.split("\n");
+
+        // Find the line for the selected year (skip header)
+        const dataLine = lines.find((line) => {
+          const trimmed = line.trim();
+          if (!trimmed || trimmed.toLowerCase().startsWith("year")) return false;
+          const parts = trimmed.split(",");
           return parts[0] === year.toString();
         });
-        
+
         if (dataLine) {
-          const parts = dataLine.split(';');
+          const parts = dataLine.trim().split(",");
           setTempData({
             mean: parseFloat(parts[1]),
             max: parseFloat(parts[2]),

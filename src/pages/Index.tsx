@@ -58,7 +58,6 @@ const Index = () => {
     eccentricity: "constante" as "constante" | "variable",
     precession: "constante" as "constante" | "variable",
     latitude: "0" as "0" | "50" | "90",
-    tempType: "Temp" as "Temp" | "Var_temp",
   });
 
   const [comparisonImages, setComparisonImages] = useState<string[]>([]);
@@ -73,12 +72,12 @@ const Index = () => {
   const t = translations[language];
 
   const generateImagePath = () => {
-    const { tempType, latitude, eccentricity, obliquity, precession, albedo, scenario } = parameters;
+    const { latitude, eccentricity, obliquity, precession, albedo, scenario } = parameters;
     const excBool = eccentricity === "variable" ? "V" : "F";
     const oblBool = obliquity === "variable" ? "V" : "F";
     const preBool = precession === "variable" ? "V" : "F";
-    const filename = `${tempType}_lat${latitude}_alb${albedo}_exc${excBool}_obl${oblBool}_pre${preBool}_scen_${scenario}.png`;
-    return `https://raw.githubusercontent.com/Daltaxy/Milankovi-Cycles-and-their-effect-on-Temperature-Python-/main/${scenario}/${filename}`;
+    const filename = `${scenario}_lat${latitude}_alb${albedo}_exc${excBool}_obl${oblBool}_pre${preBool}.png`;
+    return `https://raw.githubusercontent.com/Daltaxy/Milankovi-Cycles-and-their-effect-on-Temperature-Python-/main/${filename}`;
   };
 
   const addToComparison = () => {
