@@ -61,12 +61,12 @@ export const TemperatureSlider = ({ parameters, language }: TemperatureSliderPro
         const dataLine = lines.find((line) => {
           const trimmed = line.trim();
           if (!trimmed || trimmed.toLowerCase().startsWith("year")) return false;
-          const parts = trimmed.split(";");
+          const parts = trimmed.split(",");
           return parts[0] === year.toString();
         });
 
         if (dataLine) {
-          const parts = dataLine.trim().split(";");
+          const parts = dataLine.trim().split(",");
           console.log("Found data for year", year, ":", parts);
           setTempData({
             mean: parseFloat(parts[1]),
