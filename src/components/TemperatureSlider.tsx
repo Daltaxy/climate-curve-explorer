@@ -45,13 +45,16 @@ export const TemperatureSlider = ({ parameters, language }: TemperatureSliderPro
       
       try {
         const url = generateCSVUrl();
+        console.log("Fetching CSV from:", url);
         const response = await fetch(url);
         
         if (!response.ok) {
+          console.error("Failed to fetch CSV:", response.status, response.statusText);
           throw new Error("Failed to fetch data");
         }
         
         const csvText = await response.text();
+        console.log("CSV first 500 chars:", csvText.substring(0, 500));
         const lines = csvText.split("\n");
 
         // Find the line for the selected year (skip header)
@@ -64,12 +67,14 @@ export const TemperatureSlider = ({ parameters, language }: TemperatureSliderPro
 
         if (dataLine) {
           const parts = dataLine.trim().split(",");
+          console.log("Found data for year", year, ":", parts);
           setTempData({
             mean: parseFloat(parts[1]),
             max: parseFloat(parts[2]),
             min: parseFloat(parts[3]),
           });
         } else {
+          console.error("No data found for year:", year);
           setError(true);
         }
       } catch (err) {
