@@ -10,7 +10,6 @@ interface ParameterControlProps {
     eccentricity: "constante" | "variable";
     precession: "constante" | "variable";
     latitude: "0" | "50" | "90";
-    tempType: "Temp" | "Var_temp";
   };
   onParameterChange: (param: string, value: string) => void;
   language?: "en" | "fr";
@@ -84,21 +83,6 @@ export const ParameterControl = ({ parameters, onParameterChange, language = "en
         </RadioGroup>
       </div>
 
-      <div>
-        <h3 className="text-sm font-semibold text-foreground mb-4">{t.tempType}</h3>
-        <div className="flex items-center justify-between">
-          <Label htmlFor="temp-type" className="text-sm text-muted-foreground">
-            {parameters.tempType === "Temp" ? t.temperature : t.tempVariation}
-          </Label>
-          <Switch
-            id="temp-type"
-            checked={parameters.tempType === "Var_temp"}
-            onCheckedChange={(checked) => 
-              onParameterChange("tempType", checked ? "Var_temp" : "Temp")
-            }
-          />
-        </div>
-      </div>
 
       <div>
         <h3 className="text-sm font-semibold text-foreground mb-4">{t.albedo}</h3>
