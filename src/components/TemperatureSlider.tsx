@@ -54,27 +54,28 @@ export const TemperatureSlider = ({ parameters, language }: TemperatureSliderPro
         }
         
         const csvText = await response.text();
-        console.log("CSV first 500 chars:", csvText.substring(0, 500));
-        const lines = csvText.split("\n");
+        const lines = csvText.trim().split("\n").filter(line => line.trim());
 
         // Find the line for the selected year (skip header)
         const dataLine = lines.find((line) => {
           const trimmed = line.trim();
           if (!trimmed || trimmed.toLowerCase().startsWith("year")) return false;
-          const parts = trimmed.split(",");
-          return parts[0] === year.toString();
+          const parts = trimmed.split(",").map(p => p.trim());
+          return parseInt(parts[0]) === year;
         });
 
         if (dataLine) {
-          const parts = dataLine.trim().split(",");
-          console.log("Found data for year", year, ":", parts);
-          setTempData({
-            mean: parseFloat(parts[1]),
-            max: parseFloat(parts[2]),
-            min: parseFloat(parts[3]),
-          });
+          const parts = dataLine.trim().split(",").map(p => p.trim());
+          const mean = parseFloat(parts[1]);
+          const max = parseFloat(parts[2]);
+          const min = parseFloat(parts[3]);
+          
+          if (!isNaN(mean) && !isNaN(max) && !isNaN(min)) {
+            setTempData({ mean, max, min });
+          } else {
+            setError(true);
+          }
         } else {
-          console.error("No data found for year:", year);
           setError(true);
         }
       } catch (err) {
