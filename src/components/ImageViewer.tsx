@@ -7,6 +7,13 @@ import {
   ResizableHandle,
 } from "@/components/ui/resizable";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface ImageViewerProps {
   images: string[];
@@ -17,6 +24,7 @@ interface ImageViewerProps {
 
 export const ImageViewer = ({ images, onRemoveImage, layout, onReorderImages }: ImageViewerProps) => {
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [zoomLevels, setZoomLevels] = useState<Record<number, number>>({});
 
   if (images.length === 0) {
     return (
@@ -47,41 +55,63 @@ export const ImageViewer = ({ images, onRemoveImage, layout, onReorderImages }: 
     setDraggedIndex(null);
   };
 
-  const renderImage = (image: string, index: number) => (
-    <div
-      key={`${image}-${index}`}
-      className="relative group cursor-move"
-      draggable
-      onDragStart={() => handleDragStart(index)}
-      onDragOver={handleDragOver}
-      onDrop={() => handleDrop(index)}
-    >
-      <img
-        src={image}
-        alt={`Temperature curve ${index + 1}`}
-        className="w-full h-full object-contain border border-border rounded-lg shadow-lg"
-        onError={(e) => {
-          const target = e.target as HTMLImageElement;
-          target.style.display = "none";
-          const parent = target.parentElement;
-          if (parent) {
-            const errorDiv = document.createElement("div");
-            errorDiv.className = "flex items-center justify-center h-64 bg-card border border-border rounded-lg";
-            errorDiv.innerHTML = `<p class="text-muted-foreground">Image not found: ${image.split('/').pop()}</p>`;
-            parent.appendChild(errorDiv);
-          }
-        }}
-      />
-      <Button
-        variant="destructive"
-        size="icon"
-        className="absolute top-2 right-2 opacity-80 group-hover:opacity-100 transition-opacity"
-        onClick={() => onRemoveImage(index)}
+  const renderImage = (image: string, index: number) => {
+    const zoom = zoomLevels[index] || 100;
+    
+    return (
+      <div
+        key={`${image}-${index}`}
+        className="relative group cursor-move"
+        draggable
+        onDragStart={() => handleDragStart(index)}
+        onDragOver={handleDragOver}
+        onDrop={() => handleDrop(index)}
       >
-        <Trash2 className="h-4 w-4" />
-      </Button>
-    </div>
-  );
+        <img
+          src={image}
+          alt={`Temperature curve ${index + 1}`}
+          className="w-full h-full object-contain border border-border rounded-lg shadow-lg transition-transform"
+          style={{ transform: `scale(${zoom / 100})` }}
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.style.display = "none";
+            const parent = target.parentElement;
+            if (parent) {
+              const errorDiv = document.createElement("div");
+              errorDiv.className = "flex items-center justify-center h-64 bg-card border border-border rounded-lg";
+              errorDiv.innerHTML = `<p class="text-muted-foreground">Image not found: ${image.split('/').pop()}</p>`;
+              parent.appendChild(errorDiv);
+            }
+          }}
+        />
+        <div className="absolute top-2 right-2 flex gap-2 opacity-80 group-hover:opacity-100 transition-opacity">
+          <Select
+            value={zoom.toString()}
+            onValueChange={(value) => setZoomLevels(prev => ({ ...prev, [index]: parseInt(value) }))}
+          >
+            <SelectTrigger className="w-20 h-10 bg-background">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="50">50%</SelectItem>
+              <SelectItem value="75">75%</SelectItem>
+              <SelectItem value="100">100%</SelectItem>
+              <SelectItem value="125">125%</SelectItem>
+              <SelectItem value="150">150%</SelectItem>
+              <SelectItem value="200">200%</SelectItem>
+            </SelectContent>
+          </Select>
+          <Button
+            variant="destructive"
+            size="icon"
+            onClick={() => onRemoveImage(index)}
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+    );
+  };
 
   const getLayoutClasses = () => {
     switch (layout) {
