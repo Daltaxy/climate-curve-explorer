@@ -51,7 +51,6 @@ export const ImageViewer = ({ images, onRemoveImage, layout, onReorderImages }: 
 
   const renderImage = (image: string, index: number) => {
     const zoom = zoomLevels[index] || 100;
-    const zoomSteps = [50, 75, 100, 150, 200];
     
     return (
       <div
@@ -83,11 +82,11 @@ export const ImageViewer = ({ images, onRemoveImage, layout, onReorderImages }: 
           <div className="flex items-center gap-2 bg-background rounded-md px-3 py-2 border border-border">
             <span className="text-xs font-medium min-w-[3ch]">{zoom}%</span>
             <Slider
-              value={[zoomSteps.indexOf(zoom) !== -1 ? zoomSteps.indexOf(zoom) : 2]}
-              onValueChange={(value) => setZoomLevels(prev => ({ ...prev, [index]: zoomSteps[value[0]] }))}
-              min={0}
-              max={4}
-              step={1}
+              value={[zoom]}
+              onValueChange={(value) => setZoomLevels(prev => ({ ...prev, [index]: value[0] }))}
+              min={50}
+              max={200}
+              step={5}
               className="w-24"
             />
           </div>
