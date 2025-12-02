@@ -7,13 +7,7 @@ import {
   ResizableHandle,
 } from "@/components/ui/resizable";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
 
 interface ImageViewerProps {
   images: string[];
@@ -57,6 +51,7 @@ export const ImageViewer = ({ images, onRemoveImage, layout, onReorderImages }: 
 
   const renderImage = (image: string, index: number) => {
     const zoom = zoomLevels[index] || 100;
+    const zoomSteps = [50, 75, 100, 150, 200];
     
     return (
       <div
@@ -84,23 +79,18 @@ export const ImageViewer = ({ images, onRemoveImage, layout, onReorderImages }: 
             }
           }}
         />
-        <div className="absolute top-2 right-2 flex gap-2 opacity-80 group-hover:opacity-100 transition-opacity">
-          <Select
-            value={zoom.toString()}
-            onValueChange={(value) => setZoomLevels(prev => ({ ...prev, [index]: parseInt(value) }))}
-          >
-            <SelectTrigger className="w-20 h-10 bg-background">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="50">50%</SelectItem>
-              <SelectItem value="75">75%</SelectItem>
-              <SelectItem value="100">100%</SelectItem>
-              <SelectItem value="125">125%</SelectItem>
-              <SelectItem value="150">150%</SelectItem>
-              <SelectItem value="200">200%</SelectItem>
-            </SelectContent>
-          </Select>
+        <div className="absolute top-2 right-2 flex gap-2 items-center opacity-80 group-hover:opacity-100 transition-opacity">
+          <div className="flex items-center gap-2 bg-background rounded-md px-3 py-2 border border-border">
+            <span className="text-xs font-medium min-w-[3ch]">{zoom}%</span>
+            <Slider
+              value={[zoomSteps.indexOf(zoom) !== -1 ? zoomSteps.indexOf(zoom) : 2]}
+              onValueChange={(value) => setZoomLevels(prev => ({ ...prev, [index]: zoomSteps[value[0]] }))}
+              min={0}
+              max={4}
+              step={1}
+              className="w-24"
+            />
+          </div>
           <Button
             variant="destructive"
             size="icon"
